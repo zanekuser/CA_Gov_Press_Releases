@@ -6,6 +6,20 @@
  */
 
 
+// Bills
+$('#filter-bill').click(function() {
+	//Reload the page to display the new data.
+	//You could optionally work with Ajax
+	window.location.href="/bills?name=" + $("#billauthor").val()
+});
+
+$('#download-bill').click(function() {
+	window.location.href="/bills?format=csv&name=" + $("#billauthor").val()
+});
+
+
+
+// Speaker (Template)
 $('#filter-btn').click(function() {
 	//Reload the page to display the new data.
 	//You could optionally work with Ajax

@@ -18,23 +18,45 @@ def index():
 
 @app.route('/appoints')
 def appoints():
-	"""
-	Displays the home page that leads users into different pages
-	"""
 	return flask.render_template('appoints.html')
 
 @app.route('/bills')
 def bills():
-	"""
-	Displays the home page that leads users into different pages
-	"""
-	return flask.render_template('bills.html')
+	format_ = request.args.get("format", None) # Get URL string after '?'
+	bill = request.args.get("name", "") # Get name inputted by user (could be empty)
+	
+	# 1. Assign variable to database
+	# 2. (Maybe?) Use dictionary function
+	# 3. (Maybe?) Cursor variable
+	# 4. Create string for SQL command with unknowns
+	# 5. Initialize empty strings for SQL command
+
+	if bill:
+		pass
+		# Change empty string command (#5)
+
+	# Use % to complete SQL command (with limit statement)
+
+	if bill:
+		pass
+		# Execute the command using cursor.execute
+	else:
+		pass
+		# Execute without the specified query (drop-downs only)
+	# Assign variable for return value
+
+	# connection.close()
+
+	if format_ == "csv":
+		pass
+		# return download csv file
+	else:
+		billyears = [x for x in range(2018, 2010, -1)]
+		billparties = ['Republican', 'Democrat', 'Other']
+		return flask.render_template('bills.html', billyears=billyears, billparties=billparties)
 
 @app.route('/press')
 def press():
-	"""
-	Displays the home page that leads users into different pages
-	"""
 	return flask.render_template('press.html')
  
 @app.route('/speakers')
