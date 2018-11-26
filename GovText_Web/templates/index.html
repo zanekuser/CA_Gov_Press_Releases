@@ -1,26 +1,49 @@
+<!doctype html>
 <html>
 <head>
+<title>Landing Page</title>	
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script type="text/javascript">
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+</script>
 </head>
-<body>
-	<div class="container">
-		<div class="container h-100">
-		    <div class="row align-items-center h-100">
-		        <div class="col-6 mx-auto">
-		            <div class="jumbotron">
-		                
-		            </div>
-		        </div>
-		    </div>
-		</div>
-		<div class="row text-center">
-			<a href="/appoints">
-				> Search speeches by a speaker's last name
-			</a>
-		</div>
-		
-	</div>
+<body onLoad="MM_preloadImages('file:///C|/Users/Anne Tambe/Desktop/Gov_Website_Stuff/code/Asset 22.png','file:///C|/Users/Anne Tambe/Desktop/Gov_Website_Stuff/code/Asset 24.png','file:///C|/Users/Anne Tambe/Desktop/Gov_Website_Stuff/code/Asset 26.png')">
+
+<header>&nbsp;</header>
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1><strong>California Governor Press Releases</strong></h1>
+    <hr>
+			
+<a href="/bills" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('bills','','../images/Asset 22.png',1)"><img src="../images/Asset 21.png" alt="Bills" width="271" height="359" id="bills"></a>
+	
+<a href="/analysis" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('analy','','../images/Asset 24.png',1)"><img src="../images/Asset 23.png" alt="Analysis" width="182" height="359" id="analy"></a>
+
+<a href="/appoints" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('appoint','','../images/Asset 26.png',1)"><img src="../images/Asset 25.png" alt="Appointments" width="274" height="360" id="appoint"></a>
+
+	  
+</div>
+</div>
+
 </body>
-
-
 </html>
