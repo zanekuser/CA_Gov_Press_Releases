@@ -18,13 +18,51 @@ def index():
 
 @app.route('/appoints')
 def appoints():
-	return flask.render_template('appoints.html')
+	format_ = request.args.get("format", None)
+	appointee = request.args.get("name", "")
+	appointyear = request.args.get("appointyear", "")
+	appointparty = request.args.get("appointparty", "")
+	appointgender = request.args.get("appointgender", "")
+
+	# 1. Assign variable to database
+	# 2. (Maybe?) Use dictionary function
+	# 3. (Maybe?) Cursor variable
+	# 4. Create string for SQL command with unknowns
+	# 5. Initialize empty strings for SQL command
+
+	if appointee:
+		pass
+		# Change empty string command (#5)
+
+	# Use % to complete SQL command (with limit statement)
+
+	if appointee:
+		pass
+		# Execute the command using cursor.execute
+	else:
+		pass
+		# Execute without the specified query (drop-downs only)
+	# Assign variable for return value
+
+	# connection.close()
+
+	if format_ == "csv":
+		pass
+		# return download csv file
+	else:
+		appointyears = [x for x in range(2018, 2010, -1)]
+		appointparties = ['Republican', 'Democrat', 'Other']
+		appointgenders = ['Female', 'Male', 'Other']
+		return flask.render_template('appoints.html', appointyears=appointyears, appointparties=appointparties, appointgenders=appointgenders)
 
 @app.route('/bills')
 def bills():
-	format_ = request.args.get("format", None) # Get URL string after '?'
-	bill = request.args.get("name", "") # Get name inputted by user (could be empty)
-	
+	format_ = request.args.get("format", None)
+	bill = request.args.get("name", "")
+	billdate = request.args.get("billdate", "")
+	billparty = request.args.get("billparty", "")
+	billlocation = request.args.get("billlocation", "")
+
 	# 1. Assign variable to database
 	# 2. (Maybe?) Use dictionary function
 	# 3. (Maybe?) Cursor variable
@@ -53,11 +91,38 @@ def bills():
 	else:
 		billyears = [x for x in range(2018, 2010, -1)]
 		billparties = ['Republican', 'Democrat', 'Other']
-		return flask.render_template('bills.html', billyears=billyears, billparties=billparties)
+		billlocation = ['Sacramento', 'Other']
+		return flask.render_template('bills.html', billyears=billyears, billparties=billparties, billlocation=billlocation)
 
 @app.route('/press')
 def press():
-	return flask.render_template('press.html')
+	format_ = request.args.get("format", None)
+	location = request.args.get("name", "")
+	year = request.args.get("year", "")
+	category = request.args.get("category", "")
+
+	# 1. Assign variable to database
+	# 2. (Maybe?) Use dictionary function
+	# 3. (Maybe?) Cursor variable
+	# 4. Create string for SQL command with unknowns
+	# 5. Initialize empty strings for SQL command
+
+	# Use % to complete SQL command (with limit statement)
+
+	# Execute without the specified query (drop-downs only)
+	
+	# Assign variable for return value
+
+	# connection.close()
+
+	if format_ == "csv":
+		pass
+		# return download csv file
+	else:
+		years = [x for x in range(2018, 2010, -1)]
+		categories = ['appointments', 'veterans-military', 'media-advisories', 'Other']
+		locations = ['Sacramento', 'Other']
+		return flask.render_template('press.html', locations=locations, categories=categories, years=years)
  
 @app.route('/speakers')
 def speakers():

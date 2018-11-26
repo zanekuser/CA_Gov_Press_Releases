@@ -21,19 +21,23 @@
 				</select>
 			</div>
 			<div class="col-md-3">
-				<input class="form-control" style="font-style: italic;" type="text" placeholder="Location" value="{{speaker}}" id="speaker"/>
-				<small>e.g. Sacramento</small>
-			</div>
-			<div class="col-md-3">
-				<select class="form-control" id="party" style="font-style: italic;">
-					<option value="">Categories</option>
-					{% for year in years %}
-					<option value="{{year}}" {% if selected_year == year %}selected{%endif%}>{{year}}</option>
+				<select class="form-control" id="location" style="font-style: italic;">
+					<option value="">Location</option>
+					{% for location in locations %}
+					<option value="{{location}}" {% if selected_year == location %}selected{%endif%}>{{location}}</option>
 					{% endfor %}
 				</select>
 			</div>
 			<div class="col-md-3">
-				<button style="width:100%;" class="btn btn-primary" id="filter-btn"><b>Filter</b></button>
+				<select class="form-control" id="category" style="font-style: italic;">
+					<option value="">Categories</option>
+					{% for category in categories %}
+					<option value="{{category}}" {% if selected_year == category %}selected{%endif%}>{{category}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-md-3">
+				<button style="width:100%;" class="btn btn-primary" id="filter-press"><b>Filter</b></button>
 			</div>
 		</div>
 		
@@ -71,10 +75,6 @@
 						{% endif %}
 					</tbody>
 				</table>
-				<hr>
-				<div class="col-md-4 offset-4">
-					<button style="width:100%;" class="btn btn-success" id="download-btn"><b>Download</b></button>
-				</div>
 			</div>
 		</div>
 	</div>

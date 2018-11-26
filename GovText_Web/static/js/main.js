@@ -10,13 +10,33 @@
 $('#filter-bill').click(function() {
 	//Reload the page to display the new data.
 	//You could optionally work with Ajax
-	window.location.href="/bills?name=" + $("#billauthor").val()
+	window.location.href="/bills?name=" + $("#billauthor").val() + "&billdate=" + $("#billdate").val() 
+	+ "&billparty=" + $("#billparty").val() + "&billlocation=" + $("#billlocation").val() 
 });
 
 $('#download-bill').click(function() {
 	window.location.href="/bills?format=csv&name=" + $("#billauthor").val()
 });
 
+// Appoints
+$('#filter-appoints').click(function() {
+	//Reload the page to display the new data.
+	//You could optionally work with Ajax
+	window.location.href="/appoints?name=" + $("#appointee").val() + "&appointyear=" + $("#appointyear").val() 
+	+ "&appointparty=" + $("#appointparty").val() + "&appointgender=" + $("#appointgender").val() 
+});
+
+$('#download-appoints').click(function() {
+	window.location.href="/bills?format=csv&name=" + $("#appointee").val()
+});
+
+// Press
+$('#filter-press').click(function() {
+	//Reload the page to display the new data.
+	//You could optionally work with Ajax
+	window.location.href="/press?name=" + $("#location").val() + "&year=" + $("#year").val() 
+	+ "&category=" + $("#category").val()
+});
 
 
 // Speaker (Template)
