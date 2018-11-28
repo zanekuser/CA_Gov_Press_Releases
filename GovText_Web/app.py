@@ -25,26 +25,37 @@ def appoints():
 	appointgender = request.args.get("appointgender", "")
 
 	# 1. Assign variable to database
+	connection = sqlite3.connect("mydatabase2.sqlite") 
+	connection.row_factory = dictionary_factory
+	cursor = connection.cursor()
 	# 2. (Maybe?) Use dictionary function
 	# 3. (Maybe?) Cursor variable
 	# 4. Create string for SQL command with unknowns
+	all_records_query = "SELECT post_id AS PostID, name AS Appointee, \
+	date AS Date, party AS Party, gender AS Gender, \
+	description AS Description FROM appointments %s %s"
 	# 5. Initialize empty strings for SQL command
 
+	where_clause = ""
 	if appointee:
-		pass
+		where_clause = "where name = ?" if appointee else ""
 		# Change empty string command (#5)
 
-	# Use % to complete SQL command (with limit statement)
+
+	limit_statement = "limit 20" if format_ != "csv" else ""
+
+	all_records_query = all_records_query % (where_clause, limit_statement)
 
 	if appointee:
-		pass
-		# Execute the command using cursor.execute
+		cursor.execute(all_records_query ,(appointee,))
 	else:
-		pass
-		# Execute without the specified query (drop-downs only)
-	# Assign variable for return value
+		cursor.execute(all_records_query)
+	records = cursor.fetchall()
 
-	# connection.close()
+	connection.close()
+
+	# Execute without the specified query (drop-downs only)
+
 
 	if format_ == "csv":
 		pass
@@ -53,7 +64,7 @@ def appoints():
 		appointyears = [x for x in range(2018, 2010, -1)]
 		appointparties = ['Republican', 'Democrat', 'Other']
 		appointgenders = ['Female', 'Male', 'Other']
-		return flask.render_template('appoints.html', appointyears=appointyears, appointparties=appointparties, appointgenders=appointgenders)
+		return flask.render_template('appoints.html', records=records, appointyears=appointyears, appointparties=appointparties, appointgenders=appointgenders)
 
 @app.route('/bills')
 def bills():
