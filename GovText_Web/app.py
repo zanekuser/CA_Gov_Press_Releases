@@ -16,55 +16,86 @@ def index():
 	"""
 	return flask.render_template('index.html')
 
+
+
+
 @app.route('/appoints')
 def appoints():
+
 	format_ = request.args.get("format", None)
 	appointee = request.args.get("name", "")
 	appointyear = request.args.get("appointyear", "")
 	appointparty = request.args.get("appointparty", "")
 	appointgender = request.args.get("appointgender", "")
 
-	# 1. Assign variable to database
-	connection = sqlite3.connect("mydatabase2.sqlite") 
+
+	connection = sqlite3.connect("database.db")
 	connection.row_factory = dictionary_factory
 	cursor = connection.cursor()
-	# 2. (Maybe?) Use dictionary function
-	# 3. (Maybe?) Cursor variable
-	# 4. Create string for SQL command with unknowns
+
 	all_records_query = "SELECT post_id AS PostID, name AS Appointee, \
-	date AS Date, party AS Party, gender AS Gender, \
-	description AS Description FROM appointments %s %s"
-	# 5. Initialize empty strings for SQL command
+	date AS Year, party AS Party, gender AS Gender, \
+	description AS Description FROM appointments %s %s;"
+
 
 	where_clause = ""
-	if appointee:
-		where_clause = "where name = ?" if appointee else ""
-		# Change empty string command (#5)
+	where_list = []
+	condition_tuple = []
+	if appointee or appointyear or appointparty or appointgender:
+		where_clause += 'where '
+		if appointee:
+			where_list.append('name like ? ')
+			condition_tuple.append('%' + appointee.lower() + '%')
+
+		if appointyear:
+			where_list.append('date like ? ')
+			condition_tuple.append('%' + str(appointyear))
+
+		if appointparty:
+			where_list.append('party == ? ')
+			condition_tuple.append(str(appointparty))
+
+		if appointgender:
+			where_list.append('gender == ? ')
+			if appointgender == 'Male':
+				condition_tuple.append('M')
+			elif appointgender == 'Female':
+				condition_tuple.append('F')
+			else:
+				condition_tuple.append(appointgender)
 
 
-	limit_statement = "limit 20" if format_ != "csv" else ""
+		where_clause += 'and '.join(where_list)
 
-	all_records_query = all_records_query % (where_clause, limit_statement)
+		condition_tuple = tuple(condition_tuple)
 
-	if appointee:
-		cursor.execute(all_records_query ,(appointee,))
+		limit_statement = 'ORDER BY post_id LIMIT 10' if format_ != 'csv' else ''
+
+		all_records_query = all_records_query % (where_clause, limit_statement)
+
+		if appointee or appointyear or appointparty or appointgender:
+			cursor.execute(all_records_query , condition_tuple)
+		else:
+			cursor.execute(all_records_query)
+
+		records = cursor.fetchall()
+
+		connection.close()
 	else:
-		cursor.execute(all_records_query)
-	records = cursor.fetchall()
-
-	connection.close()
+		records = None
 
 	# Execute without the specified query (drop-downs only)
 
 
 	if format_ == "csv":
-		pass
+		return download_csv(records, "appointments_%s.csv" % (appointee.lower()))
 		# return download csv file
 	else:
 		appointyears = [x for x in range(2018, 2010, -1)]
 		appointparties = ['Republican', 'Democrat', 'Other']
 		appointgenders = ['Female', 'Male', 'Other']
-		return flask.render_template('appoints.html', records=records, appointyears=appointyears, appointparties=appointparties, appointgenders=appointgenders)
+		return flask.render_template('appoints.html', records=records, appointyears=appointyears,
+									 appointparties=appointparties, appointgenders=appointgenders)
 
 @app.route('/bills')
 def bills():
@@ -134,58 +165,6 @@ def press():
 		categories = ['appointments', 'veterans-military', 'media-advisories', 'Other']
 		locations = ['Sacramento', 'Other']
 		return flask.render_template('press.html', locations=locations, categories=categories, years=years)
- 
-@app.route('/speakers')
-def speakers():
-	"""
-	This is how arguments are passed from the View to this controller
-	The get request can look like this: 
-	/speakers?name=rubio&format=csv
-	This tells the controller to get all speeches by rubio in a csv format
-	/speakers?name=rubio
-	the url above just tells the controller to get speeches by rubio and display them
-	/speakers
-	The url above simply asks for all speeches to be displayed
-	/speakers?format=csv
-	Asks for all speeches to be made available in csv format
-	"""
-
-	format_ = request.args.get("format", None)
-	speaker = request.args.get("name", "")
-
-	connection = sqlite3.connect("mydatabase.sqlite") 
-	connection.row_factory = dictionary_factory
-	cursor = connection.cursor()
-
-	#Query that gets the records that match the query
-	all_records_query = "SELECT hearing.hearing_title as title, hearing.date as date, speech.text as text, \
-				speaker.surname as name FROM hearing inner join speech on \
-				speech.hearing_id = hearing.hearing_id inner join speaker \
-				on speaker.speech_id = speech.speech_id %s %s;"
-
-	where_clause = ""
-	if speaker:
-		where_clause = "where speaker.surname = ? " if speaker else ""
-
-	limit_statement = "limit 20" if format_ != "csv" else ""
-
-	all_records_query = all_records_query % (where_clause, limit_statement)
-
-	if speaker:
-		cursor.execute(all_records_query ,(speaker.lower(),))
-	else:
-		cursor.execute(all_records_query)
-	records = cursor.fetchall()
-
-	connection.close()
-
-	#Send the information back to the view
-	#if the user specified csv send the data as a file for download else visualize the data on the web page
-	if format_ == "csv": 
-		return download_csv(records, "speeches_%s.csv" % (speaker.lower()))
-	else:
-		years = [x for x in range(2018, 1995, -1)]
-		return flask.render_template('speaker.html', records=records, speaker=speaker, years=years)
 
 ########################################################################
 # The following are helper functions. They do not have a @app.route decorator

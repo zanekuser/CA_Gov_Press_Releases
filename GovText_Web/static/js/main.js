@@ -27,7 +27,8 @@ $('#filter-appoints').click(function() {
 });
 
 $('#download-appoints').click(function() {
-	window.location.href="/bills?format=csv&name=" + $("#appointee").val()
+	window.location.href="/appoints?name=" + $("#appointee").val() + "&appointyear=" + $("#appointyear").val() 
+	+ "&appointparty=" + $("#appointparty").val() + "&appointgender=" + $("#appointgender").val() 
 });
 
 // Press
