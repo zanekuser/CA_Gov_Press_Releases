@@ -2,6 +2,7 @@
 <head>
 	<!-- load the bootstrap css here -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<title>Press Releases</title>
 </head>
 <body>
 	<div class="container">
@@ -11,32 +12,35 @@
 			</div>
 		</div>
 		<br clear="all">
+
 		<div class="row">
-			<div class="col-md-3">
+
+			<div class="col-md-2">
+				<input class="form-control" style="font-style: italic;" type="text" placeholder="Post ID" value="{{postid}}" id="postid"/>
+			</div>
+
+			<div class="col-md-2">
+				<select class="form-control" id="month" style="font-style: italic;">
+					<option value="">Month</option>
+					{% for month in months %}
+					<option value="{{month}}" {% if selected_year == month %}selected{%endif%}>{{month}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-md-2">
 				<select class="form-control" id="year" style="font-style: italic;">
-					<option value="">Date</option>
+					<option value="">Year</option>
 					{% for year in years %}
 					<option value="{{year}}" {% if selected_year == year %}selected{%endif%}>{{year}}</option>
 					{% endfor %}
 				</select>
 			</div>
-			<div class="col-md-3">
-				<select class="form-control" id="location" style="font-style: italic;">
-					<option value="">Location</option>
-					{% for location in locations %}
-					<option value="{{location}}" {% if selected_year == location %}selected{%endif%}>{{location}}</option>
-					{% endfor %}
-				</select>
+
+			<div class="col-md-2">
+				<input class="form-control" style="font-style: italic;" type="text" placeholder="Location" value="{{location}}" id="location"/>
 			</div>
-			<div class="col-md-3">
-				<select class="form-control" id="category" style="font-style: italic;">
-					<option value="">Categories</option>
-					{% for category in categories %}
-					<option value="{{category}}" {% if selected_year == category %}selected{%endif%}>{{category}}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="col-md-3">
+
+			<div class="col-md-4">
 				<button style="width:100%;" class="btn btn-primary" id="filter-press"><b>Filter</b></button>
 			</div>
 		</div>
@@ -51,21 +55,21 @@
 			<div class="col-md-12 text-center">
 				<table class="table table-striped thead-dark">
 					<thead class="text-center">
-						<td>Appointee</td>
 						<td>Post ID</td>
-						<td>Party</td>
-						<td>Gender</td>
-						<td>Description</td>
+						<td>Month</td>
+						<td>Year</td>
+						<td>Location</td>
+						<td>Title</td>
 					</thead>
 					<tbody>
 						{% if (records is defined) and records %}
 							{% for record in records %}
 								<tr>
-									<td>{{record.title}}</td>
-									<td>{{record.date}}</td>
-									<td>{{record.name}}</td>
-									<!-- This line shows just the first 100 characters and cuts it after that -->
-									<td>{{record.text[0:100] + " ..."}}</td>
+									<td class="text-center">{{record.PostID}}</td>
+									<td class="text-center">{{record.MONTH}}</td>
+									<td class="text-center">{{record.YEAR}}</td>
+									<td class="text-center">{{record.LOCATION}}</td>
+									<td class="text-center">{{record.TITLE[0:75] + " ..."}}</td>
 								</tr>
 							{% endfor %}
 						{% else %}
@@ -75,6 +79,10 @@
 						{% endif %}
 					</tbody>
 				</table>
+				<hr>
+				<div class="col-md-4 offset-4" style="padding-bottom: 10px">
+					<button style="width:100%;" class="btn btn-success" id="download-appoints"><b>Download</b></button>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -139,32 +139,68 @@ def bills():
 @app.route('/press')
 def press():
 	format_ = request.args.get("format", None)
-	location = request.args.get("name", "")
+	postid = request.args.get("postid", "")
+	location = request.args.get("location", "")
 	year = request.args.get("year", "")
-	category = request.args.get("category", "")
+	month = request.args.get("month", "")
 
-	# 1. Assign variable to database
-	# 2. (Maybe?) Use dictionary function
-	# 3. (Maybe?) Cursor variable
-	# 4. Create string for SQL command with unknowns
-	# 5. Initialize empty strings for SQL command
+	connection = sqlite3.connect("database.db")
+	connection.row_factory = dictionary_factory
+	cursor = connection.cursor()
 
-	# Use % to complete SQL command (with limit statement)
+	all_records_query = "SELECT post_id AS PostID, strftime('%%m', date) AS MONTH, \
+	strftime('%%Y', date) AS YEAR, location AS LOCATION, \
+	title AS TITLE FROM all_releases %s %s;"
+
+	where_clause = ""
+	where_list = []
+	condition_tuple = []
+	if postid or location or year or month:
+		where_clause += 'where '
+		if postid:
+			where_list.append('post_id like ? ')
+			condition_tuple.append('%' + postid.lower() + '%')
+
+		if month:
+			where_list.append("strftime('%m', date) like ? ")
+			condition_tuple.append('%' + str(month))
+
+		if year:
+			where_list.append("strftime('%Y', date) like ? ")
+			condition_tuple.append('%' + year)
+
+		if location:
+			where_list.append('location like ? ')
+			condition_tuple.append('%' + location.lower())
+
+		where_clause += 'and '.join(where_list)
+
+		condition_tuple = tuple(condition_tuple)
+
+		limit_statement = 'ORDER BY post_id LIMIT 10' if format_ != 'csv' else ''
+
+		all_records_query = all_records_query % (where_clause, limit_statement)
+
+		if postid or location or year or month:
+			cursor.execute(all_records_query , condition_tuple)
+		else:
+			cursor.execute(all_records_query)
+
+		records = cursor.fetchall()
+
+		connection.close()
+	else:
+		records = None
 
 	# Execute without the specified query (drop-downs only)
-	
-	# Assign variable for return value
-
-	# connection.close()
 
 	if format_ == "csv":
 		pass
 		# return download csv file
 	else:
 		years = [x for x in range(2018, 2010, -1)]
-		categories = ['appointments', 'veterans-military', 'media-advisories', 'Other']
-		locations = ['Sacramento', 'Other']
-		return flask.render_template('press.html', locations=locations, categories=categories, years=years)
+		months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+		return flask.render_template('press.html', records=records, months=months, years=years)
 
 ########################################################################
 # The following are helper functions. They do not have a @app.route decorator

@@ -35,8 +35,8 @@ $('#download-appoints').click(function() {
 $('#filter-press').click(function() {
 	//Reload the page to display the new data.
 	//You could optionally work with Ajax
-	window.location.href="/press?name=" + $("#location").val() + "&year=" + $("#year").val() 
-	+ "&category=" + $("#category").val()
+	window.location.href="/press?postid=" + $("#postid").val() + "&location=" + $("#location").val() 
+	+ "&year=" + $("#year").val() + "&month=" + $("#month").val()
 });
 
 
