@@ -24,7 +24,7 @@ def appoints():
 
 	format_ = request.args.get("format", None)
 	appointee = request.args.get("name", "")
-	appointyear = request.args.get("appointyear", "")
+	appointyear = request.args.get("appointyear", 0)
 	appointparty = request.args.get("appointparty", "")
 	appointgender = request.args.get("appointgender", "")
 
@@ -91,11 +91,9 @@ def appoints():
 		return download_csv(records, "appointments_%s.csv" % (appointee.lower()))
 		# return download csv file
 	else:
-		appointyears = [x for x in range(2018, 2010, -1)]
-		appointparties = ['Republican', 'Democrat', 'Other']
-		appointgenders = ['Female', 'Male', 'Other']
-		return flask.render_template('appoints.html', records=records, appointyears=appointyears,
-									 appointparties=appointparties, appointgenders=appointgenders)
+		appointyears = [str(x) for x in range(2018, 2010, -1)]
+		return flask.render_template('appoints.html', records=records, appointyears=appointyears, appointee=appointee,
+									 appointparty=appointparty, appointgender=appointgender, selected_year=appointyear)
 
 @app.route('/bills')
 def bills():

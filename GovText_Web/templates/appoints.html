@@ -19,25 +19,26 @@
 			<div class="col-md-2">
 				<select class="form-control" id="appointyear" style="font-style: italic;">
 					<option value="">Date</option>
-					{% for appointyear in appointyears %}
-					<option value="{{appointyear}}" {% if selected_year == appointyear %}selected{%endif%}>{{appointyear}}</option>
+					{% for year in appointyears %}
+					<option  {% if year == selected_year %} selected {% endif %}>{{year}}</option>
 					{% endfor %}
 				</select>
 			</div>
 			<div class="col-md-2">
 				<select class="form-control" id="appointgender" style="font-style: italic;">
 					<option value="">Gender</option>
-					{% for appointgender in appointgenders %}
-					<option value="{{appointgender}}" {% if selected_year == appointgender %}selected{%endif%}>{{appointgender}}</option>
-					{% endfor %}
+					<option {% if "Male" == appointgender %}selected{%endif%}>Male</option>
+					<option {% if "Female" == appointgender %}selected{%endif%}>Female</option>
+					<option {% if "Other" == appointgender %}selected{%endif%}>Other</option>
+
 				</select>
 			</div>
 			<div class="col-md-2">
 				<select class="form-control" id="appointparty" style="font-style: italic;">
 					<option value="">Party</option>
-					{% for appointparty in appointparties %}
-					<option value="{{appointparty}}" {% if selected_year == appointparty %}selected{%endif%}>{{appointparty}}</option>
-					{% endfor %}
+					<option  {% if "Republican" == appointparty %}selected{%endif%}>Republican</option>
+					<option  {% if "Democrat" == appointparty %}selected{%endif%}>Democrat</option>
+					<option  {% if "Other" == appointparty %}selected{%endif%}>Other</option>
 				</select>
 			</div>
 			<div class="col-md-4">
@@ -92,6 +93,9 @@
 	<!-- Load the javascript down here -->
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 	<script src="static/js/main.js"></script>
+	<script type="text/javascript">
+
+	</script>
 </body>
 
 
